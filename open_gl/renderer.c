@@ -4,7 +4,7 @@ static GLFWwindow* window;
 static timer* timerr;
 static int frames = 0;
 
-void opengl_initialize(int width, int height, shader_files s) {
+void opengl_initialize(int width, int height) {
     window = create_window(width, height);
     timerr = initialize_timer();
 

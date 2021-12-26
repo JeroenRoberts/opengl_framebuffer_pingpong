@@ -11,4 +11,4 @@
 
 void opengl_terminate();
 int opengl_window_open();
-void opengl_initialize(int width, int height, shader_files s);
+void opengl_initialize(int width, int height);
