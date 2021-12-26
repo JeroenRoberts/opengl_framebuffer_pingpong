@@ -1,13 +1,3 @@
-#define GLEW_STATIC
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
-#include <time.h>
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <math.h>
-#include <assert.h>
-#include "initialize_gpu_buffers.h"
 #include "load_shaders.h"
 
 static char* read_from_file(char* file_name) {

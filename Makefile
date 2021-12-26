@@ -9,9 +9,9 @@ OPENGL_SRCS =  open_gl/create_window_using_glfw.c \
 							 open_gl/upload_vertices.c \
 							 open_gl/load_shaders.c \
 							 open_gl/swapper.c \
-							 open_gl/render_fbo_swap.c \
+							 open_gl/renderer.c \
 							 open_gl/set_attributes.c \
-# OTHER_SRCS = 
+							 open_gl/uniforms.c \
 
 SRCS = $(OPENGL_SRCS) \
 

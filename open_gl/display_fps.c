@@ -1,7 +1,3 @@
-#include <time.h>
-#include <string.h>
-#include <stdlib.h>
-#include <stdio.h>
 #include "display_fps.h"
 
 const double convert_to_second = 1/((double) 1000000000);

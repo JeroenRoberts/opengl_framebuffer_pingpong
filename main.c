@@ -6,7 +6,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <math.h>
-#include "open_gl/render_fbo_swap.h"
+#include "open_gl/renderer.h"
 #include <assert.h>
 
 
@@ -19,11 +19,31 @@ int main(void)
     s.vert = malloc(5000);
     sprintf(s.vert, "%s", "/home/jeroen/December-2021/open_gl_fbo/open_gl/shaders/display_texture.vert");
     sprintf(s.frag, "%s", "/home/jeroen/December-2021/open_gl_fbo/open_gl/shaders/display_texture.frag");
-    opengl_initialize(1000, 1000, s);
-    int n = 0;
+    int pixel_width = 1000;
+    int pixel_height = 1000;
+    opengl_initialize(pixel_width, pixel_width, s);
+    static GLint shader_program_update;
+    /* static GLint shader_program_screen; */
+    shader_program_update = load_shaders_into_shader_program(s);
+    set_attributes(shader_program_update);
+    /* shader_program_screen = load_shaders_into_shader_program(s); */
+
+    create_swapper(pixel_width, pixel_height);
+    //uniforms
+    initialize_uniforms(shader_program_update);
+    int frames = 0;
     while(opengl_window_open()) {
-        n++;
+        update_uniforms(frames);
+
+        perform_swap(shader_program_update);
+        glClear(GL_COLOR_BUFFER_BIT);
+        draw_rectangle();
+
         
+        glBindFramebuffer(GL_FRAMEBUFFER, 0); // 0 = screen (visual , i.e. CAN SEE)
+        glClear(GL_COLOR_BUFFER_BIT);
+        draw_rectangle();
+        frames++;
     }
     opengl_terminate();
 
