@@ -48,6 +48,35 @@ static void initialize_uniforms(){
 static enum MODE M;
 
 
+static void load_texture(char* file_name, GLenum texture_unit) {
+    int width, height;
+    glActiveTexture(texture_unit);
+    GLuint tex_source;
+    glGenTextures(1, &tex_source);
+    glBindTexture(GL_TEXTURE_2D, tex_source);
+
+    unsigned char* image = SOIL_load_image(file_name, &width, &height, 0, SOIL_LOAD_RGB);
+    if(image) {
+        printf("loaded image %d %d\n", width, height);
+        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB,
+                  GL_UNSIGNED_BYTE, image);
+        SOIL_free_image_data(image);
+    }
+    else {
+        fprintf(stderr, "failed to load image");
+        exit(-1);
+    }
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    printf("texture: %d\n", tex_source);
+    glUniform1i(glGetUniformLocation(shader_program, "tex"), 0);
+
+}
 
 void opengl_initialize(enum MODE mode, int width, int height, char* vertex_file_name, char* fragment_file_name) {
     window = create_window(width, height);
@@ -74,38 +103,17 @@ void opengl_initialize(enum MODE mode, int width, int height, char* vertex_file_
 
     switch(M){
         case(NORMAL_DRAW): {
-
+            break;
         }
         case(TEXTURE_SWAP): {
             create_swapper(width, height);
+            break;
         }
         case(LOAD_TEXTURE): {
-            glActiveTexture(GL_TEXTURE0);
-            GLuint tex_source;
-            glGenTextures(1, &tex_source);
-            glBindTexture(GL_TEXTURE_2D, tex_source);
+            load_texture("cat.jpeg", GL_TEXTURE0);
+            load_texture("dog.png", GL_TEXTURE1);
 
-            unsigned char* image = SOIL_load_image("cat.jpeg", &width, &height, 0, SOIL_LOAD_RGB);
-            if(image) {
-                printf("loaded image %d %d\n", width, height);
-                glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-                glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB,
-                          GL_UNSIGNED_BYTE, image);
-                SOIL_free_image_data(image);
-            }
-            else {
-                fprintf(stderr, "failed to load image");
-                exit(-1);
-            }
-            printf("texture: %d\n", tex_source);
-            glUniform1i(glGetUniformLocation(shader_program, "tex"), 0);
-
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-
+            break;
         }
     }
 
@@ -118,18 +126,23 @@ static void update_uniforms() {
 }
 
 static void opengl_start_frame() {
+    if(frames > 120) {
+        glUniform1i(glGetUniformLocation(shader_program, "tex"), 1);
+    }
     update_uniforms();
     switch(M){
         case(NORMAL_DRAW): {
-
+            break;
         }
         case(TEXTURE_SWAP): {
             perform_swap(shader_program);
-            glClear(GL_COLOR_BUFFER_BIT);
-            glDrawElements(GL_TRIANGLES, s_draw_rectangle.N_elements, GL_UNSIGNED_INT, 0);
+            /* glClear(GL_COLOR_BUFFER_BIT); */
+            /* glDrawElements(GL_TRIANGLES, s_draw_rectangle.N_elements, GL_UNSIGNED_INT, 0); */
+            break;
         }
         case(LOAD_TEXTURE): {
-
+            break;
+ 
         }
     }
 
@@ -137,7 +150,7 @@ static void opengl_start_frame() {
 }
 
 static void opengl_end_frame() {
-    glBindFramebuffer(GL_FRAMEBUFFER, 0); // 0 = screen (visual , i.e. CAN SEE)
+    /* glBindFramebuffer(GL_FRAMEBUFFER, 0); // 0 = screen (visual , i.e. CAN SEE) */
     glClear(GL_COLOR_BUFFER_BIT);
     glDrawElements(GL_TRIANGLES, s_draw_rectangle.N_elements, GL_UNSIGNED_INT, 0);
 
