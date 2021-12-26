@@ -1,10 +1,3 @@
-#define GLEW_STATIC
-#include <GL/glew.h>
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <assert.h>
-#include <math.h>
 #include "upload_vertices.h"
 static GLfloat vertices[]= {
         -1.0f, 1.0f, 0.0f, 0.0f, // Top left: pos_x, pos_y, texture_pos_x, texture_pos_y

@@ -17,8 +17,8 @@ int main(void)
     shader_files s;
     s.frag = malloc(5000);
     s.vert = malloc(5000);
-    sprintf(s.vert, "%s", "/home/jeroen/December-2021/open_gl_fbo/open_gl/basic_shaders/display_texture.vert");
-    sprintf(s.frag, "%s", "/home/jeroen/December-2021/open_gl_fbo/open_gl/basic_shaders/display_texture.frag");
+    sprintf(s.vert, "%s", "/home/jeroen/December-2021/open_gl_fbo/open_gl/shaders/display_texture.vert");
+    sprintf(s.frag, "%s", "/home/jeroen/December-2021/open_gl_fbo/open_gl/shaders/display_texture.frag");
     opengl_initialize(1000, 1000, s);
     int n = 0;
     while(opengl_window_open()) {
