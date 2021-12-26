@@ -126,9 +126,6 @@ static void update_uniforms() {
 }
 
 static void opengl_start_frame() {
-    if(frames > 120) {
-        glUniform1i(glGetUniformLocation(shader_program, "tex"), 1);
-    }
     update_uniforms();
     switch(M){
         case(NORMAL_DRAW): {
@@ -136,6 +133,9 @@ static void opengl_start_frame() {
         }
         case(TEXTURE_SWAP): {
             perform_swap(shader_program);
+
+            glClear(GL_COLOR_BUFFER_BIT);
+            glDrawElements(GL_TRIANGLES, s_draw_rectangle.N_elements, GL_UNSIGNED_INT, 0);
             /* glClear(GL_COLOR_BUFFER_BIT); */
             /* glDrawElements(GL_TRIANGLES, s_draw_rectangle.N_elements, GL_UNSIGNED_INT, 0); */
             break;
@@ -150,7 +150,7 @@ static void opengl_start_frame() {
 }
 
 static void opengl_end_frame() {
-    /* glBindFramebuffer(GL_FRAMEBUFFER, 0); // 0 = screen (visual , i.e. CAN SEE) */
+    glBindFramebuffer(GL_FRAMEBUFFER, 0); // 0 = screen (visual , i.e. CAN SEE)
     glClear(GL_COLOR_BUFFER_BIT);
     glDrawElements(GL_TRIANGLES, s_draw_rectangle.N_elements, GL_UNSIGNED_INT, 0);
 

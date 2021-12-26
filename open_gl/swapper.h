@@ -18,7 +18,8 @@ typedef struct{
 }texture;
 
 typedef struct{
-    GLuint fbo;
+    GLuint fbo_1;
+    GLuint fbo_2;
     texture tex_1;
     texture tex_2;
 }swapper;

@@ -45,14 +45,14 @@ static texture create_texture(int width, int height, GLenum frame_buffer, GLenum
 
 void perform_swap(GLint shader_program) {
     if(current_color_attachment == 0) {
-        glBindFramebuffer(GL_FRAMEBUFFER, fbo_swapper->fbo);
+        glBindFramebuffer(GL_FRAMEBUFFER, fbo_swapper->fbo_2);
         /* glDrawBuffer(fbo_swapper->tex_1.color_attachment); */
         /* glUniform1i(glGetUniformLocation(shader_program, "tex"), fbo_swapper->tex_2.id); */
         glUniform1i(glGetUniformLocation(shader_program, "tex"), 0);
         current_color_attachment = 1;
     }
     else {
-        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        glBindFramebuffer(GL_FRAMEBUFFER, fbo_swapper->fbo_1);
         /* glBindFramebuffer(GL_FRAMEBUFFER, fbo_swapper->tex_2.fbo); */
         /* glDrawBuffer(fbo_swapper->tex_2.color_attachment); */
         glUniform1i(glGetUniformLocation(shader_program, "tex"), 1);
@@ -62,9 +62,10 @@ void perform_swap(GLint shader_program) {
 
 void create_swapper(int width, int height) {
     fbo_swapper = malloc(sizeof(swapper));
-    fbo_swapper->fbo = create_fbo();
-    fbo_swapper->tex_1 = create_texture(width, height, 0, GL_TEXTURE0, GL_COLOR_ATTACHMENT0);
-    fbo_swapper->tex_2 = create_texture(width, height, fbo_swapper->fbo, GL_TEXTURE1, GL_COLOR_ATTACHMENT0);
+    fbo_swapper->fbo_1 = create_fbo();
+    fbo_swapper->fbo_2 = create_fbo();
+    fbo_swapper->tex_1 = create_texture(width, height, fbo_swapper->fbo_1, GL_TEXTURE0, GL_COLOR_ATTACHMENT0);
+    fbo_swapper->tex_2 = create_texture(width, height, fbo_swapper->fbo_2, GL_TEXTURE1, GL_COLOR_ATTACHMENT0);
 }
 
 
