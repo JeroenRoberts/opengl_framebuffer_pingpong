@@ -13,7 +13,7 @@
 
 #include "swapper.h"
 static swapper* fbo_swapper;
-static int current_color_attachment = 0;
+static int ping_pong = 0;
 
 static GLuint create_fbo() {
     GLuint fbo;
@@ -44,19 +44,15 @@ static texture create_texture(int width, int height, GLenum frame_buffer, GLenum
 }
 
 void perform_swap(GLint shader_program) {
-    if(current_color_attachment == 0) {
+    if(ping_pong == 0) {
         glBindFramebuffer(GL_FRAMEBUFFER, fbo_swapper->fbo_2);
-        /* glDrawBuffer(fbo_swapper->tex_1.color_attachment); */
-        /* glUniform1i(glGetUniformLocation(shader_program, "tex"), fbo_swapper->tex_2.id); */
         glUniform1i(glGetUniformLocation(shader_program, "tex"), 0);
-        current_color_attachment = 1;
+        ping_pong = 1;
     }
     else {
         glBindFramebuffer(GL_FRAMEBUFFER, fbo_swapper->fbo_1);
-        /* glBindFramebuffer(GL_FRAMEBUFFER, fbo_swapper->tex_2.fbo); */
-        /* glDrawBuffer(fbo_swapper->tex_2.color_attachment); */
         glUniform1i(glGetUniformLocation(shader_program, "tex"), 1);
-        current_color_attachment = 0;
+        ping_pong = 0;
     }
 }
 

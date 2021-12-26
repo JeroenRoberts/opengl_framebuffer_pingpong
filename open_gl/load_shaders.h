@@ -9,5 +9,9 @@
 #include <math.h>
 #include <assert.h>
 #include "initialize_gpu_buffers.h"
+typedef struct{
+    char* vert;
+    char* frag;
+}shader_files;
 
-GLuint load_shaders_into_shader_program(char* vertex_file_name, char* fragment_file_name);
+GLuint load_shaders_into_shader_program(shader_files s);

@@ -22,7 +22,7 @@ gpu_buffers* initialize_gpu_buffers(cpu_data s){
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, s.sizeof_elements, s.elements, GL_STATIC_DRAW);
 
     GLuint vbo;
-    glGenBuffers(1, &vbo); // Generate 1 buffer
+    glGenBuffers(1, &vbo);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
     glBufferData(GL_ARRAY_BUFFER, s.sizeof_vertices, s.vertices, GL_STATIC_DRAW);

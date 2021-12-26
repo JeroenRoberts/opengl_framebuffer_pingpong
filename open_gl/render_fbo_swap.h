@@ -14,13 +14,7 @@
 #include "shapes/basic.h"
 #include "load_shaders.h"
 
-enum MODE {
-    NORMAL_DRAW,
-    TEXTURE_SWAP,
-    LOAD_TEXTURE,
-};
-
 
 void opengl_terminate();
 int opengl_window_open();
-void opengl_initialize(enum MODE M, int width, int height, char* vertex_file_name, char* fragment_file_name);
+void opengl_initialize(int width, int height, shader_files s);

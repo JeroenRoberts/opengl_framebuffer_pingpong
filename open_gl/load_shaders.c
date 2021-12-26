@@ -23,48 +23,36 @@ static char* read_from_file(char* file_name) {
 
     return string;
 }
-
-static GLuint compile_vertex_shader(char* file_name) {
-    //"/home/jeroen/PhD_simulations/opengl_plotting/basic_shaders/simple.vert"
-    char* vertexSource = read_from_file(file_name);
-    GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertexShader, 1,  (const GLchar* const*) (&vertexSource), NULL);
-    glCompileShader(vertexShader);
-    GLint status;
-    glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &status);
-
-    if(status != GL_TRUE)
-    {
-        fprintf(stderr, "vert compilation failed\n");
-    }
-    
-    return vertexShader;
-}
-
-static GLuint compile_fragment_shader(char* file_name) {
+static GLuint compile_shader(char* file_name, char* type) {
     //"/home/jeroen/PhD_simulations/opengl_plotting/basic_shaders/simple.frag"
     char* fragmentSource = read_from_file(file_name);
-
-    GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+    GLuint fragmentShader;
+    if(strcmp(type, "vert") == 0) {
+        fragmentShader = glCreateShader(GL_VERTEX_SHADER);
+    } else if(strcmp(type, "frag") == 0)  {
+        fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+    } else{
+        exit(-1);
+    }
     glShaderSource(fragmentShader, 1,(const GLchar* const*) (&fragmentSource), NULL);
     glCompileShader(fragmentShader);
     GLint status;
     glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &status);
     if(status != GL_TRUE)
     {
-        fprintf(stderr, "frag compilation failed\n");
+        fprintf(stderr, "%s compilation failed\n", type);
         int max_length = 10000;
         char error_log[max_length];
         glGetShaderInfoLog(fragmentShader, max_length, &max_length, error_log);
-        fprintf(stderr, "\n\nFragment Compile Error:\n%s\n\n", error_log);
+        fprintf(stderr, "\n\n%s Compile Error:\n%s\n\n", type, error_log);
     }
     return fragmentShader;
 }
 
 
-GLuint load_shaders_into_shader_program(char* vertex_file_name, char* fragment_file_name){
-    GLuint vertexShader = compile_vertex_shader(vertex_file_name);
-    GLuint fragmentShader = compile_fragment_shader(fragment_file_name);
+GLuint load_shaders_into_shader_program(shader_files s_files){
+    GLuint vertexShader = compile_shader(s_files.vert, "vert");
+    GLuint fragmentShader = compile_shader(s_files.frag, "frag");
 
     GLuint shaderProgram = glCreateProgram();
     glAttachShader(shaderProgram, vertexShader);
