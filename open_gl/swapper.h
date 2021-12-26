@@ -14,11 +14,11 @@
 typedef struct{
     GLuint id;
     GLenum GL_unit;
-    GLuint fbo;
     GLenum color_attachment;
 }texture;
 
 typedef struct{
+    GLuint fbo;
     texture tex_1;
     texture tex_2;
 }swapper;

@@ -1,7 +1,7 @@
 CC = gcc
 # CFLAGS = -Wall -O0 -g #when debugging with gdb use this instead
 CFLAGS = -Wall -O3 -g
-LIBS = `pkg-config --libs --cflags glew glfw3` -lGL -lm
+LIBS = `pkg-config --libs --cflags glew glfw3` -lSOIL -lGL -lm
 
 OPENGL_SRCS =  open_gl/create_window_using_glfw.c \
 							 open_gl/display_fps.c \

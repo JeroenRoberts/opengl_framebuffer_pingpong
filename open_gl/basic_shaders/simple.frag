@@ -9,8 +9,7 @@ uniform int step;
 
 void main()
 {
-    float r = step/600.0;
-    outColor = vec4(r, 0.5, 0.0 , 1.0);
-    /* outColor = vec4(gl_FragCoord.x/1000.0, gl_FragCoord.y/1000.0, 0.5 , 1.0); */
-    /* outColor= texture(tex, tex_position_out); */
+    /* float x = tex_position_out.x; */
+    outColor = texture(tex, tex_position_out);
+    /* outColor = vec4(x, 0.0, 0.0, 1.0); */
 }

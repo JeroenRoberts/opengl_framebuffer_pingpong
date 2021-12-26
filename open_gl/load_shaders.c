@@ -53,6 +53,10 @@ static GLuint compile_fragment_shader(char* file_name) {
     if(status != GL_TRUE)
     {
         fprintf(stderr, "frag compilation failed\n");
+        int max_length = 10000;
+        char error_log[max_length];
+        glGetShaderInfoLog(fragmentShader, max_length, &max_length, error_log);
+        fprintf(stderr, "\n\nFragment Compile Error:\n%s\n\n", error_log);
     }
     return fragmentShader;
 }

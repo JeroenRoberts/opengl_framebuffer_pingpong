@@ -13,6 +13,7 @@
 #include "shapes/basic.h"
 #include "load_shaders.h"
 #include "swapper.h"
+#include "SOIL/SOIL.h"
 
 #include "render_fbo_swap.h"
 
@@ -44,12 +45,14 @@ static void initialize_uniforms(){
 
     uniform_step = glGetUniformLocation(shader_program, "step");
 }
+static enum MODE M;
 
 
 
-void opengl_initialize(int width, int height, char* vertex_file_name, char* fragment_file_name) {
+void opengl_initialize(enum MODE mode, int width, int height, char* vertex_file_name, char* fragment_file_name) {
     window = create_window(width, height);
     timerr = initialize_timer();
+    M = mode;
 
     s_draw_rectangle.vertices = vertices;   
     s_draw_rectangle.elements = elements;
@@ -69,8 +72,41 @@ void opengl_initialize(int width, int height, char* vertex_file_name, char* frag
     glVertexAttribPointer(tex_pos_attrib, 2, GL_FLOAT, GL_FALSE, 4*sizeof(GLfloat), (void*)(2 * sizeof(GLfloat)));
     glEnableVertexAttribArray(tex_pos_attrib);
 
-    //swapper
-    /* create_swapper(width, height); */
+    switch(M){
+        case(NORMAL_DRAW): {
+
+        }
+        case(TEXTURE_SWAP): {
+            create_swapper(width, height);
+        }
+        case(LOAD_TEXTURE): {
+            glActiveTexture(GL_TEXTURE0);
+            GLuint tex_source;
+            glGenTextures(1, &tex_source);
+            glBindTexture(GL_TEXTURE_2D, tex_source);
+
+            unsigned char* image = SOIL_load_image("dog.png", &width, &height, 0, SOIL_LOAD_RGB);
+            if(image) {
+                printf("loaded image %d %d\n", width, height);
+                glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB,
+                          GL_UNSIGNED_BYTE, image);
+                SOIL_free_image_data(image);
+            }
+            else {
+                fprintf(stderr, "failed to load image");
+                exit(-1);
+            }
+            printf("texture: %d\n", tex_source);
+            glUniform1i(glGetUniformLocation(shader_program, "tex"), 0);
+
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+
+        }
+    }
 
     //uniforms
     initialize_uniforms();
@@ -82,11 +118,26 @@ static void update_uniforms() {
 
 static void opengl_start_frame() {
     update_uniforms();
-    /* perform_swap(shader_program); */
-    glClear(GL_COLOR_BUFFER_BIT);
+    switch(M){
+        case(NORMAL_DRAW): {
+
+        }
+        case(TEXTURE_SWAP): {
+            perform_swap(shader_program);
+            glClear(GL_COLOR_BUFFER_BIT);
+            glDrawElements(GL_TRIANGLES, s_draw_rectangle.N_elements, GL_UNSIGNED_INT, 0);
+        }
+        case(LOAD_TEXTURE): {
+
+        }
+    }
+
+
 }
 
 static void opengl_end_frame() {
+    glBindFramebuffer(GL_FRAMEBUFFER, 0); // 0 = screen (visual , i.e. CAN SEE)
+    glClear(GL_COLOR_BUFFER_BIT);
     glDrawElements(GL_TRIANGLES, s_draw_rectangle.N_elements, GL_UNSIGNED_INT, 0);
 
     glfwSwapBuffers(window);
