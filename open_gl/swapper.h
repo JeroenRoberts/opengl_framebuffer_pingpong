@@ -15,4 +15,4 @@ typedef struct{
 }swapper;
 
 void create_swapper(int width, int height);
-void perform_swap(GLint shader_program);
+void perform_swap(GLint shader_program_update, GLint shader_program_screen);

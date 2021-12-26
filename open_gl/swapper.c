@@ -30,15 +30,21 @@ static texture create_texture(int width, int height, GLenum frame_buffer, GLenum
     return tex;
 }
 
-void perform_swap(GLint shader_program) {
+void perform_swap(GLint shader_program_update, GLint shader_program_screen) {
     if(ping_pong == 0) {
         glBindFramebuffer(GL_FRAMEBUFFER, fbo_swapper->fbo_2);
-        glUniform1i(glGetUniformLocation(shader_program, "tex"), 0);
+        glUseProgram(shader_program_update);
+        glUniform1i(glGetUniformLocation(shader_program_update, "tex"), 0);
+        glUseProgram(shader_program_screen);
+        glUniform1i(glGetUniformLocation(shader_program_screen, "tex"), 0);
         ping_pong = 1;
     }
     else {
         glBindFramebuffer(GL_FRAMEBUFFER, fbo_swapper->fbo_1);
-        glUniform1i(glGetUniformLocation(shader_program, "tex"), 1);
+        glUseProgram(shader_program_update);
+        glUniform1i(glGetUniformLocation(shader_program_update, "tex"), 1);
+        glUseProgram(shader_program_screen);
+        glUniform1i(glGetUniformLocation(shader_program_screen, "tex"), 1);
         ping_pong = 0;
     }
 }

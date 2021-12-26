@@ -27,8 +27,6 @@ GLint initialize_shader(char* vertex_file_name, char* fragment_file_name) {
 
 int main(void)
 {
-    /* char* vertex_file_name = "/home/jeroen/December-2021/open_gl_fbo/open_gl/basic_shaders/simple.vert"; */
-    /* char* fragment_file_name = "/home/jeroen/December-2021/open_gl_fbo/open_gl/basic_shaders/simple.frag"; */
     int pixel_width = 1000;
     int pixel_height = 1000;
     opengl_initialize(pixel_width, pixel_width);
@@ -37,15 +35,11 @@ int main(void)
             "/home/jeroen/December-2021/open_gl_fbo/open_gl/shaders/display_texture.frag"
     );
 
-    /* GLint shader_program_screen = initialize_shader( */
-    /*         "/home/jeroen/December-2021/open_gl_fbo/open_gl/shaders/simple.vert", */
-    /*         "/home/jeroen/December-2021/open_gl_fbo/open_gl/shaders/simple.frag" */
-    /* ); */
+    GLint shader_program_screen = initialize_shader(
+            "/home/jeroen/December-2021/open_gl_fbo/open_gl/shaders/simple.vert",
+            "/home/jeroen/December-2021/open_gl_fbo/open_gl/shaders/simple.frag"
+    );
 
-    /* static GLint shader_program_screen; */
-    /* shader_program_screen = load_shaders_into_shader_program(s); */
-    /* set_attributes(shader_program_update); */
-    /* shader_program_screen = load_shaders_into_shader_program(s); */
 
     create_swapper(pixel_width, pixel_height);
     //uniforms
@@ -54,14 +48,18 @@ int main(void)
     while(opengl_window_open()) {
         update_uniforms(frames);
 
-        perform_swap(shader_program_update);
+        //perform ping pong swap
+        perform_swap(shader_program_update, shader_program_screen);
+        glUseProgram(shader_program_update);
         glClear(GL_COLOR_BUFFER_BIT);
         draw_rectangle();
 
-        
+        //draw result to screen
+        glUseProgram(shader_program_screen); //does this overwrite my texture? shouldnt right? CHECK THIS TODO
         glBindFramebuffer(GL_FRAMEBUFFER, 0); // 0 = screen (visual , i.e. CAN SEE)
         glClear(GL_COLOR_BUFFER_BIT);
         draw_rectangle();
+
         frames++;
     }
     opengl_terminate();
