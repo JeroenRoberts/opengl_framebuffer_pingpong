@@ -15,6 +15,7 @@ typedef struct{
     GLuint id;
     GLenum GL_unit;
     GLuint fbo;
+    GLenum color_attachment;
 }texture;
 
 typedef struct{
@@ -23,3 +24,4 @@ typedef struct{
 }swapper;
 
 void create_swapper(int width, int height);
+void perform_swap(GLint shader_program);

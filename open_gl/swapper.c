@@ -22,7 +22,7 @@ static GLuint create_fbo() {
     return fbo;
 }
 
-static texture create_texture(int width, int height, GLenum texture_unit) {
+static texture create_texture(int width, int height, GLenum texture_unit, GLenum color_attachment) {
     texture tex;
     tex.GL_unit = texture_unit;
     glGenTextures(1, &(tex.id)); // here 1 means create 1 texture
@@ -37,25 +37,31 @@ static texture create_texture(int width, int height, GLenum texture_unit) {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
     tex.fbo = create_fbo();
-
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, tex.id, 0);
+    tex.color_attachment = color_attachment;
+    glFramebufferTexture2D(GL_FRAMEBUFFER, tex.color_attachment, GL_TEXTURE_2D, tex.id, 0);
 
     return tex;
 }
 
-void perform_swap() {
+void perform_swap(GLint shader_program) {
     if(current_color_attachment == 0) {
+        glBindFramebuffer(GL_FRAMEBUFFER, fbo_swapper->tex_1.fbo);
+        glDrawBuffer(fbo_swapper->tex_1.color_attachment);
+        glUniform1i(glGetUniformLocation(shader_program, "tex"), fbo_swapper->tex_2.id);
         current_color_attachment = 1;
     }
     else {
+        glBindFramebuffer(GL_FRAMEBUFFER, fbo_swapper->tex_2.fbo);
+        glDrawBuffer(fbo_swapper->tex_2.color_attachment);
+        glUniform1i(glGetUniformLocation(shader_program, "tex"), fbo_swapper->tex_1.id);
         current_color_attachment = 0;
     }
 }
 
 void create_swapper(int width, int height) {
     fbo_swapper = malloc(sizeof(swapper));
-    fbo_swapper->tex_1 = create_texture(width, height, GL_TEXTURE0);
-    fbo_swapper->tex_2 = create_texture(width, height, GL_TEXTURE1);
+    fbo_swapper->tex_1 = create_texture(width, height, GL_TEXTURE0, GL_COLOR_ATTACHMENT0);
+    fbo_swapper->tex_2 = create_texture(width, height, GL_TEXTURE1, GL_COLOR_ATTACHMENT1);
 }
 
 

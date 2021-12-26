@@ -38,6 +38,13 @@ static cpu_data s_draw_rectangle = {
         .sizeof_elements = 6 * sizeof(GLuint),
     };
 
+static GLint uniform_step;
+
+static void initialize_uniforms(){
+
+    uniform_step = glGetUniformLocation(shader_program, "step");
+}
+
 
 
 void opengl_initialize(int width, int height, char* vertex_file_name, char* fragment_file_name) {
@@ -65,9 +72,17 @@ void opengl_initialize(int width, int height, char* vertex_file_name, char* frag
     //swapper
     /* create_swapper(width, height); */
 
+    //uniforms
+    initialize_uniforms();
+
+}
+static void update_uniforms() {
+    glUniform1i(uniform_step, frames);
 }
 
 static void opengl_start_frame() {
+    update_uniforms();
+    /* perform_swap(shader_program); */
     glClear(GL_COLOR_BUFFER_BIT);
 }
 
