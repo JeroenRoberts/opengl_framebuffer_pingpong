@@ -13,8 +13,6 @@
 #include "upload_vertices.h"
 #include "load_shaders.h"
 #include "swapper.h"
-#include "SOIL/SOIL.h"
-
 
 
 void set_attributes(GLint shader_program);

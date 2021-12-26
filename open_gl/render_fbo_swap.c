@@ -13,7 +13,6 @@
 #include "upload_vertices.h"
 #include "load_shaders.h"
 #include "swapper.h"
-#include "SOIL/SOIL.h"
 #include "set_attributes.h"
 
 #include "render_fbo_swap.h"
