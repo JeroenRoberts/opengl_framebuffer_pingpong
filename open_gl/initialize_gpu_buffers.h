@@ -8,7 +8,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <assert.h>
-#include "shapes/basic.h"
+#include "upload_vertices.h"
 
 typedef struct{
     GLuint vao;
@@ -18,4 +18,4 @@ typedef struct{
 }gpu_buffers;
 
 
-gpu_buffers* initialize_gpu_buffers(cpu_data s);
+gpu_buffers* initialize_gpu_buffers();

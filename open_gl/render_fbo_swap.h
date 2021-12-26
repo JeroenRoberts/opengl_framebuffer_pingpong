@@ -11,7 +11,7 @@
 #include "create_window_using_glfw.h"
 #include "display_fps.h"
 #include "initialize_gpu_buffers.h"
-#include "shapes/basic.h"
+#include "upload_vertices.h"
 #include "load_shaders.h"
 
 

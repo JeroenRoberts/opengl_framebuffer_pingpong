@@ -9,7 +9,7 @@
 #include <math.h>
 #include <assert.h>
 #include "initialize_gpu_buffers.h"
-#include "shapes/basic.h"
+#include "upload_vertices.h"
 
 typedef struct{
     GLuint id;

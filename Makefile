@@ -6,7 +6,7 @@ LIBS = `pkg-config --libs --cflags glew glfw3` -lSOIL -lGL -lm
 OPENGL_SRCS =  open_gl/create_window_using_glfw.c \
 							 open_gl/display_fps.c \
 							 open_gl/initialize_gpu_buffers.c \
-							 open_gl/shapes/basic.c \
+							 open_gl/upload_vertices.c \
 							 open_gl/load_shaders.c \
 							 open_gl/swapper.c \
 							 open_gl/render_fbo_swap.c \

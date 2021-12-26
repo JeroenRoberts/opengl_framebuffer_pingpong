@@ -14,3 +14,6 @@ typedef struct{
     GLint sizeof_vertices;
 }cpu_data;
 
+
+void draw_rectangle();
+void upload_vertices_rectangle();

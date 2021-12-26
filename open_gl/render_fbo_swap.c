@@ -10,36 +10,20 @@
 #include "create_window_using_glfw.h"
 #include "display_fps.h"
 #include "initialize_gpu_buffers.h"
-#include "shapes/basic.h"
+#include "upload_vertices.h"
 #include "load_shaders.h"
 #include "swapper.h"
 #include "SOIL/SOIL.h"
 
 #include "render_fbo_swap.h"
+#include "upload_vertices.h"
 
 static GLint shader_program_update;
 static GLint shader_program_screen;
 
 static GLFWwindow* window;
 static timer* timerr;
-static GLfloat vertices[]= {
-        -1.0f, 1.0f, 0.0f, 0.0f, // Top left
-        1.0f, 1.0f, 1.0f, 0.0f, // Top right
-        1.0f, -1.0f,  1.0f, 1.0f,// bottom right
-        -1.0f, -1.0f, 0.0f, 1.0f, // bottom left
-    };
-static GLuint elements[]= {
-        0, 1, 2,
-        2, 3, 0
-    };
 static int frames = 0;
-static cpu_data s_draw_rectangle = {
-        .N_vertices = 16,
-        .N_elements = 6,
-        .sizeof_vertices = 16 * sizeof(GLfloat),
-        .sizeof_elements = 6 * sizeof(GLuint),
-    };
-
 static GLint uniform_step;
 
 static void initialize_uniforms(){
@@ -52,11 +36,10 @@ void opengl_initialize(int width, int height, shader_files s) {
     window = create_window(width, height);
     timerr = initialize_timer();
 
-    s_draw_rectangle.vertices = vertices;   
-    s_draw_rectangle.elements = elements;
     
-    gpu_buffers* buffers = initialize_gpu_buffers(s_draw_rectangle);
+    gpu_buffers* buffers = initialize_gpu_buffers();
     (void) buffers; // this avoids compile warning.
+    upload_vertices_rectangle();
 
     shader_program_update = load_shaders_into_shader_program(s);
     /* shader_program_screen = load_shaders_into_shader_program(s); */
@@ -89,12 +72,12 @@ int opengl_window_open() {
 
     perform_swap(shader_program_update);
     glClear(GL_COLOR_BUFFER_BIT);
-    glDrawElements(GL_TRIANGLES, s_draw_rectangle.N_elements, GL_UNSIGNED_INT, 0);
+    draw_rectangle();
 
     
     glBindFramebuffer(GL_FRAMEBUFFER, 0); // 0 = screen (visual , i.e. CAN SEE)
     glClear(GL_COLOR_BUFFER_BIT);
-    glDrawElements(GL_TRIANGLES, s_draw_rectangle.N_elements, GL_UNSIGNED_INT, 0);
+    draw_rectangle();
 
     glfwSwapBuffers(window);
     frames++;
