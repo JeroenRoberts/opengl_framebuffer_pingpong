@@ -1,6 +1,6 @@
 #include "initialize_gpu_buffers.h"
 
-gpu_buffers* initialize_gpu_buffers(){
+gpu_buffers* initialize_gpu_buffers() {
     GLuint vao;
     glGenVertexArrays(1, &vao);
     glBindVertexArray(vao);
@@ -20,6 +20,3 @@ gpu_buffers* initialize_gpu_buffers(){
     buffers->ebo = ebo;
     return buffers;
 }
-
-
-

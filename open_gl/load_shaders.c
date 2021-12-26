@@ -14,22 +14,21 @@ static char* read_from_file(char* file_name) {
     return string;
 }
 static GLuint compile_shader(char* file_name, char* type) {
-    //"/home/jeroen/PhD_simulations/opengl_plotting/basic_shaders/simple.frag"
     char* fragmentSource = read_from_file(file_name);
     GLuint fragmentShader;
-    if(strcmp(type, "vert") == 0) {
+    if (strcmp(type, "vert") == 0) {
         fragmentShader = glCreateShader(GL_VERTEX_SHADER);
-    } else if(strcmp(type, "frag") == 0)  {
+    } else if (strcmp(type, "frag") == 0) {
         fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    } else{
+    } else {
         exit(-1);
     }
-    glShaderSource(fragmentShader, 1,(const GLchar* const*) (&fragmentSource), NULL);
+    glShaderSource(fragmentShader, 1, (const GLchar* const*)(&fragmentSource),
+                   NULL);
     glCompileShader(fragmentShader);
     GLint status;
     glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &status);
-    if(status != GL_TRUE)
-    {
+    if (status != GL_TRUE) {
         fprintf(stderr, "%s compilation failed\n", type);
         int max_length = 10000;
         char error_log[max_length];
@@ -39,8 +38,7 @@ static GLuint compile_shader(char* file_name, char* type) {
     return fragmentShader;
 }
 
-
-GLuint load_shaders_into_shader_program(shader_files s_files){
+GLuint load_shaders_into_shader_program(shader_files s_files) {
     GLuint vertexShader = compile_shader(s_files.vert, "vert");
     GLuint fragmentShader = compile_shader(s_files.frag, "frag");
 
@@ -48,10 +46,12 @@ GLuint load_shaders_into_shader_program(shader_files s_files){
     glAttachShader(shaderProgram, vertexShader);
     glAttachShader(shaderProgram, fragmentShader);
 
-    glBindFragDataLocation(shaderProgram, 0, "outColor");//selects which draw buffer https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glBindFragDataLocation.xhtml
+    glBindFragDataLocation(
+        shaderProgram, 0,
+        "outColor"); // selects which draw buffer
+                     // https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glBindFragDataLocation.xhtml
     glLinkProgram(shaderProgram);
     glUseProgram(shaderProgram);
 
     return shaderProgram;
 }
-

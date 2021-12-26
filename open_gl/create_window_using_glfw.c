@@ -9,8 +9,7 @@ GLFWwindow* create_window(const int32_t width, const int32_t height) {
 
     /* Create a windowed mode window and its OpenGL context */
     window = glfwCreateWindow(width, height, "GLFW window", NULL, NULL);
-    if (!window)
-    {
+    if (!window) {
         glfwTerminate();
         exit(-1);
     }

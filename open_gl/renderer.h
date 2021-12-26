@@ -1,13 +1,13 @@
 #pragma once
-#include "general_includes.h"
-#include "load_shaders.h"
-#include "display_fps.h"
 #include "create_window_using_glfw.h"
+#include "display_fps.h"
+#include "general_includes.h"
+#include "initialize_gpu_buffers.h"
+#include "load_shaders.h"
 #include "set_attributes.h"
 #include "swapper.h"
-#include "initialize_gpu_buffers.h"
-#include "upload_vertices.h"
 #include "uniforms.h"
+#include "upload_vertices.h"
 
 void opengl_terminate();
 int opengl_window_open();

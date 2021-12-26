@@ -8,15 +8,11 @@ void opengl_initialize(int width, int height) {
     window = create_window(width, height);
     timerr = initialize_timer();
 
-    
     gpu_buffers* buffers = initialize_gpu_buffers();
-    (void) buffers; // this avoids compile warning.
+    (void)buffers; // this avoids compile warning.
     upload_vertices_rectangle();
-
 }
-void opengl_terminate() {
-    glfwTerminate();
-}
+void opengl_terminate() { glfwTerminate(); }
 
 int opengl_window_open() {
 
@@ -29,6 +25,3 @@ int opengl_window_open() {
 
     return (!glfwWindowShouldClose(window));
 }
-
-
-
