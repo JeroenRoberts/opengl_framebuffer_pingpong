@@ -6,23 +6,19 @@
 #include <string.h>
 #include <stdlib.h>
 #include <math.h>
-#include "open_gl/renderer.h"
+#include "open_gl/render_fbo_swap.h"
 #include <assert.h>
-
-#define WIDTH 1080.0
-#define HEIGHT 1080.0
 
 
 int main(void)
 {
-    opengl_initialize(1000, 1000, 10, 20);
+    char* vertex_file_name = "/home/jeroen/December-2021/open_gl_fbo/open_gl/basic_shaders/simple.vert";
+    char* fragment_file_name = "/home/jeroen/December-2021/open_gl_fbo/open_gl/basic_shaders/simple.frag";
+    opengl_initialize(1000, 1000, vertex_file_name, fragment_file_name);
     int n = 0;
     while(opengl_window_open()) {
         n++;
-
-        double x = 0.0001*n;
-        double y = 0;
-    opengl_draw_ellipse_pbc(x, y, 1.0, 0.5, M_PI/2); 
+        
     }
     opengl_terminate();
 

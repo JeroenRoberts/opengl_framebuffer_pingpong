@@ -10,4 +10,4 @@
 #include <assert.h>
 #include "initialize_gpu_buffers.h"
 
-GLuint load_shaders_into_shader_program();
+GLuint load_shaders_into_shader_program(char* vertex_file_name, char* fragment_file_name);

@@ -8,7 +8,7 @@ OPENGL_SRCS =  open_gl/create_window_using_glfw.c \
 							 open_gl/initialize_gpu_buffers.c \
 							 open_gl/shapes/basic.c \
 							 open_gl/load_shaders.c \
-							 open_gl/renderer.c \
+							 open_gl/render_fbo_swap.c \
 # OTHER_SRCS = 
 
 SRCS = $(OPENGL_SRCS) \

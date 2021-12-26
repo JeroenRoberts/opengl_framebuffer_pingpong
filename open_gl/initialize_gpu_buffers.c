@@ -19,13 +19,13 @@ gpu_buffers* initialize_gpu_buffers(cpu_data s){
     glGenBuffers(1, &ebo);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, s.max_sizeof_elements, s.elements, GL_DYNAMIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, s.sizeof_elements, s.elements, GL_STATIC_DRAW);
 
     GLuint vbo;
     glGenBuffers(1, &vbo); // Generate 1 buffer
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
-    glBufferData(GL_ARRAY_BUFFER, s.max_sizeof_vertices, s.vertices, GL_DYNAMIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, s.sizeof_vertices, s.vertices, GL_STATIC_DRAW);
     gpu_buffers* buffers = malloc(sizeof(gpu_buffers));
     buffers->vao = vao;
     buffers->vbo = vbo;

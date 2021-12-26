@@ -12,16 +12,5 @@ typedef struct{
     GLfloat* vertices;
     GLint N_vertices;
     GLint sizeof_vertices;
-    GLint max_sizeof_vertices;
-    GLint max_sizeof_elements;
 }cpu_data;
-
-typedef struct{
-    GLfloat r;
-    GLfloat g;
-    GLfloat b;
-} rgb;
-
-/* cpu_data get_vertices_and_elements(char* shape); */
-void draw_ellipse(cpu_data* s, double x, double y, double l_major, double l_minor, double angle);
 

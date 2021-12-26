@@ -12,6 +12,7 @@
 
 static char* read_from_file(char* file_name) {
     FILE* f = fopen(file_name, "r");
+    assert(f != NULL);
 
     fseek(f, 0, SEEK_END);
     const long size = ftell(f);
@@ -23,8 +24,9 @@ static char* read_from_file(char* file_name) {
     return string;
 }
 
-static GLuint compile_vertex_shader() {
-    char* vertexSource = read_from_file("/home/jeroen/PhD_simulations/opengl_plotting/basic_shaders/simple.vert");
+static GLuint compile_vertex_shader(char* file_name) {
+    //"/home/jeroen/PhD_simulations/opengl_plotting/basic_shaders/simple.vert"
+    char* vertexSource = read_from_file(file_name);
     GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertexShader, 1,  (const GLchar* const*) (&vertexSource), NULL);
     glCompileShader(vertexShader);
@@ -39,8 +41,9 @@ static GLuint compile_vertex_shader() {
     return vertexShader;
 }
 
-static GLuint compile_fragment_shader() {
-    char* fragmentSource = read_from_file("/home/jeroen/PhD_simulations/opengl_plotting/basic_shaders/simple.frag");
+static GLuint compile_fragment_shader(char* file_name) {
+    //"/home/jeroen/PhD_simulations/opengl_plotting/basic_shaders/simple.frag"
+    char* fragmentSource = read_from_file(file_name);
 
     GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
     glShaderSource(fragmentShader, 1,(const GLchar* const*) (&fragmentSource), NULL);
@@ -55,9 +58,9 @@ static GLuint compile_fragment_shader() {
 }
 
 
-GLuint load_shaders_into_shader_program(){
-    GLuint vertexShader =  compile_vertex_shader();
-    GLuint fragmentShader=  compile_fragment_shader();
+GLuint load_shaders_into_shader_program(char* vertex_file_name, char* fragment_file_name){
+    GLuint vertexShader = compile_vertex_shader(vertex_file_name);
+    GLuint fragmentShader = compile_fragment_shader(fragment_file_name);
 
     GLuint shaderProgram = glCreateProgram();
     glAttachShader(shaderProgram, vertexShader);
