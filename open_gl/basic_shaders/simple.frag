@@ -9,7 +9,5 @@ uniform int step;
 
 void main()
 {
-    /* float x = tex_position_out.x; */
     outColor = texture(tex, tex_position_out);
-    /* outColor = vec4(x, 0.0, 0.0, 1.0); */
 }
