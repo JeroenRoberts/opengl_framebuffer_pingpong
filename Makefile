@@ -10,6 +10,7 @@ OPENGL_SRCS =  open_gl/create_window_using_glfw.c \
 							 open_gl/load_shaders.c \
 							 open_gl/swapper.c \
 							 open_gl/render_fbo_swap.c \
+							 open_gl/set_attributes.c \
 # OTHER_SRCS = 
 
 SRCS = $(OPENGL_SRCS) \

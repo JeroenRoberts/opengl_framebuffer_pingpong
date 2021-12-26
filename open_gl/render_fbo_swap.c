@@ -14,6 +14,7 @@
 #include "load_shaders.h"
 #include "swapper.h"
 #include "SOIL/SOIL.h"
+#include "set_attributes.h"
 
 #include "render_fbo_swap.h"
 #include "upload_vertices.h"
@@ -40,19 +41,9 @@ void opengl_initialize(int width, int height, shader_files s) {
     gpu_buffers* buffers = initialize_gpu_buffers();
     (void) buffers; // this avoids compile warning.
     upload_vertices_rectangle();
-
     shader_program_update = load_shaders_into_shader_program(s);
+    set_attributes(shader_program_update);
     /* shader_program_screen = load_shaders_into_shader_program(s); */
-
-    //position attribute
-    GLint pos_attrib = glGetAttribLocation(shader_program_update, "position");
-    glVertexAttribPointer(pos_attrib, 2, GL_FLOAT, GL_FALSE, 4*sizeof(GLfloat), (void*)0);
-    glEnableVertexAttribArray(pos_attrib);
-
-    //texture attribute
-    GLint tex_pos_attrib = glGetAttribLocation(shader_program_update, "tex_position");
-    glVertexAttribPointer(tex_pos_attrib, 2, GL_FLOAT, GL_FALSE, 4*sizeof(GLfloat), (void*)(2 * sizeof(GLfloat)));
-    glEnableVertexAttribArray(tex_pos_attrib);
 
     create_swapper(width, height);
     //uniforms
