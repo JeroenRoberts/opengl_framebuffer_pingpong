@@ -1,5 +1,8 @@
 #version 330 core
 in vec2 position;
+in vec2 tex_position;
+out vec2 tex_position_out;
+
 
 void main()
 {

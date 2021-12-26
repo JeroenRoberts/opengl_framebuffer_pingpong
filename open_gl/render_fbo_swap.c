@@ -12,6 +12,7 @@
 #include "initialize_gpu_buffers.h"
 #include "shapes/basic.h"
 #include "load_shaders.h"
+#include "swapper.h"
 
 #include "render_fbo_swap.h"
 
@@ -20,10 +21,10 @@ static GLint shader_program;
 static GLFWwindow* window;
 static timer* timerr;
 static GLfloat vertices[]= {
-        -1.0f, 1.0f, // Top left
-        1.0f, 1.0f, // Top right
-        1.0f, -1.0f, // bottom right
-        -1.0f, -1.0f, // bottom left
+        -1.0f, 1.0f, 0.0f, 0.0f, // Top left
+        1.0f, 1.0f, 1.0f, 0.0f, // Top right
+        1.0f, -1.0f,  1.0f, 1.0f,// bottom right
+        -1.0f, -1.0f, 0.0f, 1.0f, // bottom left
     };
 static GLuint elements[]= {
         0, 1, 2,
@@ -31,9 +32,9 @@ static GLuint elements[]= {
     };
 static int frames = 0;
 static cpu_data s_draw_rectangle = {
-        .N_vertices = 8,
+        .N_vertices = 16,
         .N_elements = 6,
-        .sizeof_vertices = 8 * sizeof(GLfloat),
+        .sizeof_vertices = 16 * sizeof(GLfloat),
         .sizeof_elements = 6 * sizeof(GLuint),
     };
 
@@ -53,8 +54,16 @@ void opengl_initialize(int width, int height, char* vertex_file_name, char* frag
 
     //position attribute
     GLint pos_attrib = glGetAttribLocation(shader_program, "position");
-    glVertexAttribPointer(pos_attrib, 2, GL_FLOAT, GL_FALSE, 2*sizeof(GLfloat), (void*)0);
+    glVertexAttribPointer(pos_attrib, 2, GL_FLOAT, GL_FALSE, 4*sizeof(GLfloat), (void*)0);
     glEnableVertexAttribArray(pos_attrib);
+
+    //texture attribute
+    GLint tex_pos_attrib = glGetAttribLocation(shader_program, "tex_position");
+    glVertexAttribPointer(tex_pos_attrib, 2, GL_FLOAT, GL_FALSE, 4*sizeof(GLfloat), (void*)(2 * sizeof(GLfloat)));
+    glEnableVertexAttribArray(tex_pos_attrib);
+
+    //swapper
+    /* create_swapper(width, height); */
 
 }
 
@@ -78,6 +87,7 @@ void opengl_terminate() {
 }
 
 int opengl_window_open() {
+    
     opengl_end_frame();
     opengl_start_frame();
     return (!glfwWindowShouldClose(window));
